@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "FakeNo",
+  "description": "Fake news detection extension",
+  "version": "1.0",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "images/fakeNoIcon.png"
+  }
+}

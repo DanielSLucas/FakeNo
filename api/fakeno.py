@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
@@ -14,6 +14,16 @@ porter_stemmer = PorterStemmer()
 app = Flask(__name__)
 
 CORS(app)
+
+@app.route("/", methods=["GET"])
+def healthyCheck():
+  return jsonify({
+    "message": "API is working"
+  })
+
+@app.route('/assets/<filename>')
+def getAsset(filename):
+  return send_from_directory('assets', filename)
 
 @app.route("/fakenews/analyse", methods=['POST'])
 def analyseNewsArticle():
