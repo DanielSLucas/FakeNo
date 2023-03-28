@@ -1,7 +1,3 @@
-const mainElement = document.querySelector("main");
-const button = document.querySelector("button");
-
-
 async function isFakeNews() {
   const API_BASE_URL = "http://localhost:5000"
   const currentURL = window.location.href;
@@ -38,12 +34,7 @@ async function isFakeNews() {
   return;
 }
 
-button.addEventListener("click", async () => {  
-  const [tab] = await chrome.tabs.query(({
-    active: true,
-    currentWindow: true,
-  }));
-
+chrome.action.onClicked.addListener(async (tab) => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     function: isFakeNews,

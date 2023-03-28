@@ -4,8 +4,13 @@
   "description": "Fake news detection extension",
   "version": "1.0",
   "permissions": ["activeTab", "scripting"],
-  "action": {
-    "default_popup": "index.html",
+  "action": {    
     "default_icon": "images/fakeNoIcon.png"
-  }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "http://*/"
+  ]
 }
