@@ -3,7 +3,7 @@
   "name": "FakeNo",
   "description": "Fake news detection extension",
   "version": "1.0",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["tabs", "activeTab", "scripting"],
   "action": {    
     "default_icon": "images/fakeNoIcon.png"
   },
@@ -11,6 +11,7 @@
     "service_worker": "background.js"
   },
   "host_permissions": [
-    "http://*/"
+    "http://*/*",
+    "https://*/*"
   ]
 }

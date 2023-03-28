@@ -1,4 +1,6 @@
 async function isFakeNews() {
+  if (document.querySelector("meta[property='og:type']")?.content !== "article") return;  
+
   const API_BASE_URL = "http://localhost:5000"
   const currentURL = window.location.href;
   
@@ -17,26 +19,26 @@ async function isFakeNews() {
 
   const isFake = !response.isReal;
   
-  if (isFake) {
-    const articleHeader = document.querySelector("h1").parentElement;
+  const assetName = isFake ? 'alert-circle.svg' : 'check-circle.svg';
+  const asset = await fetch(`${API_BASE_URL}/assets/${assetName}`).then(res => res.text());
+  
+  const articleTitle = document.querySelector("article h1") 
+    || document.querySelector("main h1") 
+    || document.querySelector("h1");
 
-    articleHeader.style = "display: flex; align-items: center;"
+  const spanElement = document.createElement("span");
+  spanElement.innerHTML = asset;
 
-    const imgElement = document.createElement("img");
-
-    imgElement.src = `${API_BASE_URL}/assets/alert-circle.png`;
-    imgElement.alt = `Alerta de fake news`
-    imgElement.ariaLabel = "Possivelmente fake!"    
-
-    articleHeader.append(imgElement);
-  }
+  articleTitle.prepend(spanElement);  
 
   return;
 }
 
-chrome.action.onClicked.addListener(async (tab) => {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: isFakeNews,
-  });
+chrome.tabs.onUpdated.addListener( (tabId, changeInfo, tab) => {
+  if (changeInfo.status == 'complete' && tab.active) {
+    chrome.scripting.executeScript({
+      target: { tabId, },
+      function: isFakeNews,
+    });
+  }
 });
