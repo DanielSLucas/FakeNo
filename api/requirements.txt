@@ -1,0 +1,6 @@
+scikit-learn
+flask
+flask-cors
+nltk
+pandas
+newspaper3k

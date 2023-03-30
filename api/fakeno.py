@@ -6,6 +6,9 @@ import pandas as pd
 import newspaper
 import pickle
 import re
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
 
 model = pickle.load(open("lrModel", "rb"))
 vectorizer = pickle.load(open("vectorizer", "rb"))
