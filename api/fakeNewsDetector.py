@@ -1,46 +1,28 @@
-from flask import Flask, request, jsonify, send_from_directory
-from flask_cors import CORS
+import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import pandas as pd 
 import newspaper
 import pickle
 import re
-import nltk
+
 nltk.download('stopwords')
 nltk.download('punkt')
 
 model = pickle.load(open("lrModel", "rb"))
 vectorizer = pickle.load(open("vectorizer", "rb"))
+
 porter_stemmer = PorterStemmer()
 
-app = Flask(__name__)
-
-CORS(app)
-
-@app.route("/", methods=["GET"])
-def healthyCheck():
-  return jsonify({
-    "message": "API is working"
-  })
-
-@app.route('/assets/<filename>')
-def getAsset(filename):
-  return send_from_directory('assets', filename)
-
-@app.route("/fakenews/analyse", methods=['POST'])
-def analyseNewsArticle():
-  body = request.json
-
-  url = body['url']
-  summarize = body['summarize']
-
-  article = getNewsArticle(url, summarize)
+def isFake(url): 
+  article = getNewsArticle(url, True)
+  print(article)
   serializedArticle = serializeArticle(article)
 
   isReal = bool(model.predict(serializedArticle)[0])
 
-  return jsonify({ "isReal": isReal })
+  return not isReal
+
 
 def getNewsArticle(url, summarize): 
   article = newspaper.Article(url, language='pt')
@@ -50,9 +32,10 @@ def getNewsArticle(url, summarize):
 
   if(summarize):
     article.nlp()
-    return article.summary
+    return f"{article.title} {' '.join(article.authors)} {article.summary}"
+    
+  return f"{article.title} {' '.join(article.authors)} {article.text}"
 
-  return article.title +' '+' '.join(article.authors)+' '+article.text
 
 def serializeArticle(article):
   sampleDf = pd.DataFrame({ "features": [article] })
@@ -69,7 +52,3 @@ def stemming_tokenizer(df):
   words = ' '.join(words)
 
   return words
-
-
-if __name__ == "__main__":
-  app.run()
