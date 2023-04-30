@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import fakeNewsDetector
+from services.analyse import analyse
 
 app = Flask(__name__)
 
@@ -25,9 +25,9 @@ def analyseNewsArticle():
 
   url = body['url']  
 
-  result = fakeNewsDetector.isFake(url)
+  result = analyse(url)
 
-  return jsonify({ "isReal": not result })
+  return jsonify(result)
 
 
 if __name__ == "__main__":
