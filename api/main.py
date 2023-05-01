@@ -14,9 +14,9 @@ def healthyCheck():
   })
 
 
-@app.route('/assets/<filename>')
-def getAsset(filename):
-  return send_from_directory('assets', filename)
+@app.route('/files/<folder>/<filename>')
+def getAsset(folder, filename):
+  return send_from_directory(f"public/{folder}", filename)
 
 
 @app.route("/fakenews/analyse", methods=['POST'])
