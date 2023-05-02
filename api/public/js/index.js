@@ -1,21 +1,27 @@
 import { 
-  setupBootstrap, 
   addAnalyseButton, 
   getAnalyseButton, 
   addAnalysisCard,
-  toogleAnalyseButtonLoading
+  toogleAnalyseButtonLoading,
+  expandAnalysisCard,
+  disableAnalyseButton
 } from './view.js';
 import { getAnalysis } from './api.js';
 
-setupBootstrap();
 await addAnalyseButton();
 
 const analyseButton = getAnalyseButton();
 
 analyseButton.onclick = async () => {
-  toogleAnalyseButtonLoading()
+  await toogleAnalyseButtonLoading();
+  
   const { isFake, analysis } = await getAnalysis();
   
-  toogleAnalyseButtonLoading()
-  addAnalysisCard(isFake, analysis)
+  await toogleAnalyseButtonLoading();
+  
+  addAnalysisCard(isFake, analysis);
+  expandAnalysisCard();
+
+  disableAnalyseButton();
 };
+
