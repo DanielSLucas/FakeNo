@@ -18,7 +18,7 @@ def analyse(url):
   isFake = fakeNewsDetector.isFake(to_fakeNo(article))
   fakeNo_prediction = "Fake" if isFake else "Real"
 
-  user_prompt = mount_user_prompt(article, fakeNo_prediction, google_results_str)
+  user_prompt = mount_user_prompt(to_gpt(article), fakeNo_prediction, google_results_str)
   gpt_analysis = get_gpt_analysis(user_prompt)
 
   return {
