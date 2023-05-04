@@ -1,5 +1,6 @@
+import { isArticlePage } from './utils.js';
 import { 
-  addAnalyseButton, 
+  modifyArticleHeader, 
   getAnalyseButton, 
   addAnalysisCard,
   toogleAnalyseButtonLoading,
@@ -8,20 +9,21 @@ import {
 } from './view.js';
 import { getAnalysis } from './api.js';
 
-await addAnalyseButton();
+if (isArticlePage()) {
+  await modifyArticleHeader();
 
-const analyseButton = getAnalyseButton();
-
-analyseButton.onclick = async () => {
-  await toogleAnalyseButtonLoading();
+  const analyseButton = getAnalyseButton();
   
-  const { isFake, analysis } = await getAnalysis();
+  analyseButton.onclick = async () => {
+    await toogleAnalyseButtonLoading();
+    
+    const { isFake, analysis } = await getAnalysis();
+    
+    await toogleAnalyseButtonLoading();
+    
+    addAnalysisCard(isFake, analysis);
+    expandAnalysisCard();
   
-  await toogleAnalyseButtonLoading();
-  
-  addAnalysisCard(isFake, analysis);
-  expandAnalysisCard();
-
-  disableAnalyseButton();
-};
-
+    disableAnalyseButton();
+  };
+}

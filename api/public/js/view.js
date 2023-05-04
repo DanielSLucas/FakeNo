@@ -1,19 +1,25 @@
 import { getAsset } from './api.js';
 
-export async function addAnalyseButton() {
-  const asset = await getAsset("search.svg");
-  
-  const articleTitle = getArticleTitle();
+const ANALYSE_BUTTON_ID = "fkn-btn-analyse";
+const ARTICLE_HEADER_ID = "fkn-article-header";
+const ANALYSIS_CARD_ID = "fkn-analysis-card";
 
-  const button = document.createElement("button");
-  button.id = "fkn-btn-analyse";
-  button.type = "button";
-  button.innerHTML = asset;
+// HEADER FUNCTIONS
 
-  articleTitle.prepend(button);
+export async function modifyArticleHeader() {
+  const oldTitleText = getArticleTitle().textContent
+
+  const newArticleHeader = createArticleHeader();
+  const newTitle = createH1Title(oldTitleText)
+  const button = await createAnalyzeButton();
+
+  newTitle.prepend(button)
+  newArticleHeader.append(newTitle)
+
+  replateCurrentTitle(newArticleHeader)
 }
 
-export function getArticleTitle() {
+function getArticleTitle() {
   const articleTitle = document.querySelector("article h1") 
     || document.querySelector("main h1") 
     || document.querySelector("h1");
@@ -21,29 +27,70 @@ export function getArticleTitle() {
   return articleTitle
 }
 
+function createArticleHeader(){
+  const articleHeader = document.createElement("div");
+  articleHeader.id = ARTICLE_HEADER_ID;
+
+  return articleHeader;
+}
+
+function createH1Title(title) {
+  const h1 = document.createElement("h1");
+  h1.innerText = title
+
+  return h1;
+}
+
+function replateCurrentTitle(content) {
+  const articleTitle = getArticleTitle();  
+
+  articleTitle.replaceWith(content)
+}
+
+// ANALYSE BUTTON FUNCTIONS
+
+async function createAnalyzeButton() {
+  const asset = await getAsset("search.svg");
+
+  const button = document.createElement("button");
+  button.id = ANALYSE_BUTTON_ID;
+  button.type = "button";
+  button.innerHTML = asset;
+
+  return button;
+}
+
 export async function toogleAnalyseButtonLoading() {
-  const button = getAnalyseButton();
+  const button = getAnalyseButton();  
 
-  const isLoading  = button.className.includes("loading");
-
-  if (isLoading) {
-    const asset  = await getAsset("search.svg");
-
-    button.innerHTML = asset;
-    button.className = "";
+  if (isLoading(button)) {
+    await resetAnalyseButton()
   } else {
-    button.className += "loading";
-
-    button.innerHTML = `
-      <div class="fkn-loading-ring">
-        <div></div><div></div><div></div><div></div>
-      </div>
-    `;
+    setLoading(button)
   }
 }
 
 export function getAnalyseButton() {
-  return document.getElementById("fkn-btn-analyse")
+  return document.getElementById(ANALYSE_BUTTON_ID)
+}
+
+async function resetAnalyseButton() {
+  const newButton  = await createAnalyzeButton();
+  getAnalyseButton().replaceWith(newButton)
+}
+
+function isLoading(element) {
+  return element.className.includes("loading");
+}
+
+function setLoading(element) {
+  element.className += "loading";
+
+  element.innerHTML = `
+    <div class="fkn-loading-ring">
+      <div></div><div></div><div></div><div></div>
+    </div>
+  `;
 }
 
 export function disableAnalyseButton() {
@@ -53,11 +100,18 @@ export function disableAnalyseButton() {
   analyseButton.disabled = true;
 }
 
+
 export function addAnalysisCard(isFake, analysis) {
+  const card = createAnalysisCardHTML(isFake, analysis)
+    
+  getArticleHeader().innerHTML += card;  
+}
+
+function createAnalysisCardHTML(isFake, analysis) {
   const status = isFake ? "danger" : "success";
 
   const card = `
-    <div id="fkn-analysis-card"  class="fkn-card fkn-border-${status} fkn-expand-contract fkn-contract">
+    <div id="${ANALYSIS_CARD_ID}"  class="fkn-card fkn-border-${status} fkn-expand-contract fkn-contract">
       <div class="fkn-card-header fkn-bg-${status}">
         <strong>${isFake ? "Fake" : "Real"}</strong>
       </div>
@@ -68,15 +122,17 @@ export function addAnalysisCard(isFake, analysis) {
       </div>
     </div>
   `;
-  
-  const articleTitle = getArticleTitle();
-  const articleHeader = articleTitle.parentElement;
 
-  articleHeader.innerHTML += card;
+  return card;
 }
 
+export function getArticleHeader() {
+  return document.getElementById(ARTICLE_HEADER_ID);
+}
+
+// TODO refatorar essa função (ela faz coisas dms!!)
 export function expandAnalysisCard() {
-  const cardEl = document.getElementById("fkn-analysis-card");
+  const cardEl = document.getElementById(ANALYSIS_CARD_ID);
 
   const fullHeight = cardEl.getBoundingClientRect().height
 

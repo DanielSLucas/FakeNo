@@ -1,3 +1,8 @@
+#fkn-article-header {
+  display: flex;
+  flex-direction: column;
+}
+
 #fkn-btn-analyse {
   background: #39444E;
   
