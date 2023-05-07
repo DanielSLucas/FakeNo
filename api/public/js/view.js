@@ -1,4 +1,5 @@
 import { getAsset } from './api.js';
+import { handleAnalyseButtonClick } from './utils.js';
 
 const ANALYSE_BUTTON_ID = "fkn-btn-analyse";
 const ARTICLE_HEADER_ID = "fkn-article-header";
@@ -56,6 +57,7 @@ async function createAnalyzeButton() {
   button.id = ANALYSE_BUTTON_ID;
   button.type = "button";
   button.innerHTML = asset;
+  button.onclick = handleAnalyseButtonClick;
 
   return button;
 }
@@ -100,14 +102,17 @@ export function disableAnalyseButton() {
   analyseButton.disabled = true;
 }
 
+// ANALYSIS CARD FUNCTIONS
 
-export function addAnalysisCard(isFake, analysis) {
-  const card = createAnalysisCardHTML(isFake, analysis)
+export function addAnalysisCard(analysis) {
+  const card = createAnalysisCardHTML(analysis)
     
-  getArticleHeader().innerHTML += card;  
+  getArticleHeader().innerHTML += card;
+  expandAnalysisCard();
 }
 
-function createAnalysisCardHTML(isFake, analysis) {
+function createAnalysisCardHTML(analysis) {
+  const isFake = analysis.split("\n\n")[0].includes("Fake");
   const status = isFake ? "danger" : "success";
 
   const card = `
@@ -130,21 +135,37 @@ export function getArticleHeader() {
   return document.getElementById(ARTICLE_HEADER_ID);
 }
 
-// TODO refatorar essa função (ela faz coisas dms!!)
 export function expandAnalysisCard() {
-  const cardEl = document.getElementById(ANALYSIS_CARD_ID);
+  const card = getAnalysisCard();
 
-  const fullHeight = cardEl.getBoundingClientRect().height
+  addCardCollapseExpandStylesToPageHead(
+    card.getBoundingClientRect().height
+  );
 
+  collapse(card);
+
+  setTimeout(expand(card), 1000);
+}
+
+function getAnalysisCard() {
+  return document.getElementById(ANALYSIS_CARD_ID);
+}
+
+function addCardCollapseExpandStylesToPageHead(cardHeight) {
   const styleEl = document.createElement("style");
   styleEl.innerHTML = `
     .fkn-card-collapsed { height: 0px; visibility: hidden; position: absolute; }
-    .fkn-card-expanded { height: ${fullHeight}px; visibility: visible; position: inherit;}
+    .fkn-card-expanded { height: ${cardHeight}px; visibility: visible; position: inherit;}
   `
   document.querySelector("head").append(styleEl)
+}
 
-  cardEl.className += " fkn-card-collapsed";  
-  setTimeout(() => {
-    cardEl.className = cardEl.className.replace("fkn-card-collapsed", "fkn-card-expanded")
-  }, 1000)
+function collapse(card) {
+  card.className += " fkn-card-collapsed";
+}
+
+function expand(card) {
+  return () => {
+    card.className = card.className.replace("fkn-card-collapsed", "fkn-card-expanded")
+  }
 }
