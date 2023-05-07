@@ -7,11 +7,13 @@ import services.fakeNewsDetector as fakeNewsDetector
 import services.googleUtils as googleUtils
 import services.gpt as gpt
 import services.webScrapper as webScrapper
+import services.utils as utils
 
 __all__ = [
   "analyse", 
   "fakeNewsDetector",
   "googleUtils",
   "gpt",
-  "webScrapper"
+  "webScrapper",
+  "utils"
 ]

@@ -112,7 +112,8 @@ export function addAnalysisCard(analysis) {
 }
 
 function createAnalysisCardHTML(analysis) {
-  const isFake = analysis.split("\n\n")[0].includes("Fake");
+  const [analysisResult, ...analysisText] = analysis.split("\n\n");
+  const isFake = analysisResult.includes("Fake");
   const status = isFake ? "danger" : "success";
 
   const card = `
@@ -122,7 +123,7 @@ function createAnalysisCardHTML(analysis) {
       </div>
       <div class="fkn-card-body">
         <p class="fkn-card-text" style="text-align: justify; font-weight: 450;">
-          ${analysis}
+          ${analysisText}
         </p>
       </div>
     </div>
