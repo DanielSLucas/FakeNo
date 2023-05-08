@@ -106,10 +106,10 @@ export function disableAnalyseButton() {
   analyseButton.disabled = true;
 }
 
-export function setTooltipContent(text) {
+export function setTooltipContent(html) {
   const tootipContent = document.querySelector("div.fkn-tooltip-content");
 
-  tootipContent.textContent = text;  
+  tootipContent.innerHTML = html;  
 }
 
 // ANALYSIS CARD FUNCTIONS
