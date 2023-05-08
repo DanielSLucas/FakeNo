@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, Response
 from flask_cors import CORS
 from services.analyse import analyse
 
@@ -25,10 +25,7 @@ def analyseNewsArticle():
 
   url = body['url']  
 
-  result = analyse(url)
-
-  return jsonify(result)
-
+  return Response(analyse(url), mimetype="application/json")
 
 if __name__ == "__main__":
   app.run()
