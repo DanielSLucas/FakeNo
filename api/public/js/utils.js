@@ -1,10 +1,6 @@
 import { addAnalysisCard, disableAnalyseButton, toogleAnalyseButtonLoading, setTooltipContent } from "./view.js";
 import { getAnalysis } from "./api.js";
 
-export function isArticlePage() {
-  return document.querySelector("meta[property='og:type']")?.content === "article";
-}
-
 const analysisSteps = {
   ARTICLE: "Processar conteúdo da página",
   GOOGLE_QUERY: "Gerar query de busca",

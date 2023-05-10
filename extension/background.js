@@ -1,4 +1,7 @@
 async function main() {
+  const isArticlePage = document.querySelector("meta[property='og:type']")?.content === "article";
+  if(!isArticlePage) return;
+  
   const head = document.querySelector('head');
 
   const cssStyle = document.createElement('link');
