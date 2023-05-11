@@ -138,7 +138,7 @@
   background-color: #000;
   color: #fff;
   font-size: 1rem;
-  text-align: center;
+  text-align: start;
   white-space: nowrap;
   padding: 0.25rem 0.5rem;
   border-radius: 0.375rem;
@@ -152,6 +152,10 @@
   /* Fade in tooltip */
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+.fkn-tooltip .fkn-tooltip-content ul {
+  list-style: none;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
