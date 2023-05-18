@@ -22,6 +22,6 @@ def analyseNewsArticle():
 
   url = body['url']
 
-  fake_news_analysis_serice = FakeNewsAnalysisService(url)
+  fake_news_analysis_service = FakeNewsAnalysisService(url)
 
-  return Response(fake_news_analysis_serice.execute(), mimetype="application/json")
+  return Response(fake_news_analysis_service.execute(), mimetype="application/json")
