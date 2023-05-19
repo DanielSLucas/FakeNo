@@ -53,10 +53,13 @@ function replateCurrentTitle(content) {
 async function createAnalyzeButton() {
   const asset = await getAsset("search.svg");
 
+  const buttonTooltipContent = '<div class="fkn-tooltip-content">Analisar</div>'
+
   const button = document.createElement("button");
   button.id = ANALYSE_BUTTON_ID;
+  button.className = "fkn-tooltip"
   button.type = "button";
-  button.innerHTML = asset;
+  button.innerHTML = asset + buttonTooltipContent;
   button.onclick = handleAnalyseButtonClick;
 
   return button;
@@ -86,12 +89,13 @@ function isLoading(element) {
 }
 
 function setLoading(element) {
-  element.className += "loading";
+  element.className += " loading";
 
   element.innerHTML = `
     <div class="fkn-loading-ring">
       <div></div><div></div><div></div><div></div>
     </div>
+    <div class="fkn-tooltip-content">Analisar</div>
   `;
 }
 
@@ -100,6 +104,12 @@ export function disableAnalyseButton() {
 
   analyseButton.onclick = () => {};
   analyseButton.disabled = true;
+}
+
+export function setTooltipContent(html) {
+  const tootipContent = document.querySelector("div.fkn-tooltip-content");
+
+  tootipContent.innerHTML = html;  
 }
 
 // ANALYSIS CARD FUNCTIONS

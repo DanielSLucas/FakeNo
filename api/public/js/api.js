@@ -1,7 +1,7 @@
 const API_BASE_URL = "http://localhost:5000";
 
 export async function getAnalysis() {
-  const response = await fetch(`${API_BASE_URL}/fakenews/analyse`,{
+  return fetch(`${API_BASE_URL}/fakenews/analyse`,{
     method: "POST",
     headers: {
       "Access-Control-Allow-Origin": "*/*",
@@ -11,9 +11,7 @@ export async function getAnalysis() {
     body: JSON.stringify({
       url: window.location.href,      
     }),
-  }).then(response => response.json())
-
-  return response;
+  })  
 }
 
 export async function getAsset(assetName) {

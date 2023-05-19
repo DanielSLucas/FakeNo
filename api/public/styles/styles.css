@@ -117,3 +117,49 @@
     transform: rotate(360deg);
   }
 }
+
+/* Tooltip container */
+.fkn-tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.fkn-tooltip .fkn-tooltip-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  visibility: hidden;
+  height: auto;
+  min-height: 2.25rem;
+  width: auto;
+  background-color: #000;
+  color: #fff;
+  font-size: 1rem;
+  text-align: start;
+  white-space: nowrap;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 105%;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.fkn-tooltip .fkn-tooltip-content ul {
+  list-style: none;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.fkn-tooltip:hover .fkn-tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}
