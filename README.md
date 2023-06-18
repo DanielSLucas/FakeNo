@@ -33,8 +33,10 @@ utilizadas para chegar a essa conclusão.
 ## Exemplos
 
 1. Notícia REAL:
+
 ![real](./screenshots/real.png)
 2. Notícia FALSA:
+
 ![fake](./screenshots/fake.png)
 
 ## Como utilizar?
