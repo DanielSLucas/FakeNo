@@ -5,5 +5,4 @@ nltk
 pandas
 newspaper3k
 openai
-newspaper3k
 google-api-python-client
