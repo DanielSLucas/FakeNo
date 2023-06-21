@@ -1,7 +1,7 @@
 # FakeNo
 
 FakeNo é uma extensão de Google Chrome que auxilia no combate a fake news, utilizando-se
-de inteligência artificial para classificar as notícias e da API do GPT para gerar um parágrafo
+de inteligência artificial para classificar notícias e da API do GPT para gerar um parágrafo
 com uma conclusão sobre a veracidade da notícia.
 
 ## Como funciona?
